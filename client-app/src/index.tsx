@@ -6,6 +6,7 @@ import 'semantic-ui-css/semantic.min.css'
 import { StoreContext, store } from './app/stores/store';
 import { router } from './app/router/Routes';
 import { RouterProvider } from 'react-router-dom';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
