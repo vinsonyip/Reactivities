@@ -15,16 +15,16 @@ export default class ActivityStore {
 
     get activitiesByDate() {
         return Array.from(this.activityRegistry.values()).sort((a, b) =>
-            a.date!.getTime()- b.date!.getTime());
+            a.date!.getTime() - b.date!.getTime());
     }
 
-    get groupedActivities(){
+    get groupedActivities() {
         return Object.entries(
-            this.activitiesByDate.reduce((activities, activity) =>{
+            this.activitiesByDate.reduce((activities, activity) => {
                 const date = format(activity.date!, 'dd MMM yyyy');
                 activities[date] = activities[date] ? [...activities[date], activity] : [activity];
                 return activities;
-            }, {} as {[key: string]: Activity[]})
+            }, {} as { [key: string]: Activity[] })
         )
     }
 
@@ -32,13 +32,16 @@ export default class ActivityStore {
         this.setLoadingInitial(true);
         try {
             const activities = await agent.Activities.list();
-            activities.forEach(activity => {
-                this.setActivity(activity);
+            runInAction(() => {
+                activities.forEach(activity => {
+                    this.setActivity(activity);
+                })
+                this.setLoadingInitial(false);
             })
-            this.setLoadingInitial(false);
         } catch (error) {
             console.log(error);
             this.setLoadingInitial(false);
+            
         }
     }
 
